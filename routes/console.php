@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Team;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -16,4 +17,10 @@ use Illuminate\Support\Facades\Artisan;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
+})->purpose('Display an inspiring quote');
+
+Artisan::command('mt', function () {
+    $t = Team::find(1);
+
+    dd($t->playersValue());
 })->purpose('Display an inspiring quote');

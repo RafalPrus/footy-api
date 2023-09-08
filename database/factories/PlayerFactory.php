@@ -22,6 +22,7 @@ class PlayerFactory extends Factory
             'date_of_birth' => fake()->dateTimeBetween('-30 years', '-20 years'),
             'fitness_status' => fake()->randomElement(['ok', 'injury']),
             'position' => fake()->randomElement(['GK', 'CB', 'RB', 'ST']),
+            'value' => fake()->numberBetween(1000000, 200000000),
         ];
     }
 }

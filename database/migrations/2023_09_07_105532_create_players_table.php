@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date_of_birth');
             $table->text('fitness_status');
             $table->text('position');
+            $table->unsignedBigInteger('value');
             $table->timestamps();
         });
     }
