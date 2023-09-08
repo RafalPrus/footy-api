@@ -18,7 +18,15 @@ return new class extends Migration
             $table->date('date_of_birth');
             $table->text('fitness_status');
             $table->text('position');
-            $table->unsignedBigInteger('value');
+            $table->unsignedSmallInteger('minutes')->default(0);
+            $table->unsignedTinyInteger('assists')->default(0);
+            $table->unsignedTinyInteger('goals')->default(0);
+            $table->unsignedSmallInteger('shots_taken')->default(0);
+            $table->unsignedSmallInteger('shots_saved')->nullable();
+            $table->unsignedSmallInteger('goals_conceded')->nullable();
+            $table->unsignedTinyInteger('red_cards')->default(0);
+            $table->unsignedTinyInteger('yellow_cards')->default(0);
+            $table->unsignedBigInteger('value')->default(0);
             $table->timestamps();
         });
     }

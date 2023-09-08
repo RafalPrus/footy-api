@@ -27,4 +27,13 @@ class Player extends Model
         return $this->belongsToMany(Team::class, (new Contract())->getTable())
             ->where('contracts.end_date', '<', now()->toDateTimeString());
     }
+
+    public function goalsPer90Minutes()
+    {
+        if (! $this->minutes || ! $this->goals) {
+            return 0;
+        }
+
+        return $this->goals / ($this->minutes / 90);
+    }
 }
