@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('game_id')->constrained();
             $table->foreignId('player_id')->constrained();
+            $table->foreignId('team_id')->constrained();
             $table->unsignedTinyInteger('minute');
             $table->timestamps();
         });

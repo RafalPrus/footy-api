@@ -19,9 +19,9 @@ class GameFactory extends Factory
     {
         return [
             'kickoff_time' => fake()->dateTimeBetween('-16 weeks', '-1 week'),
-            'team_h' => Team::factory(),
-            'team_a' => Team::factory(),
-            
+            'team_home' => Team::factory(),
+            'team_away' => Team::factory(),
+
         ];
 
         // return [

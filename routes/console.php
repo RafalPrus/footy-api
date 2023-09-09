@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Contract;
+use App\Models\Game;
 use App\Models\Player;
 use App\Models\Team;
 use Illuminate\Foundation\Inspiring;
@@ -21,7 +23,8 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('mt', function () {
-    $p = Player::find(1);
+    $p = Game::find(1);
 
-    dd($p->goalsPer90Minutes());
+    dd($p->teamAway);
+    //TODO: can't use team_home, how to enable this?
 })->purpose('Display an inspiring quote');
