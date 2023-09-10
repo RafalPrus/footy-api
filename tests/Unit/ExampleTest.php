@@ -17,10 +17,10 @@ class ExampleTest extends TestCase
         $team = Team::factory()->create();
         $player = Player::factory()->create();
         $playerContract = Contract::factory()->create(['team_id' => $team->id, 'player_id' => $player->id]);
-        
+
         $teamPlayers = $team->players;
         $teamPlayer = $teamPlayers->first();
-        
+
         $this->assertCount(1, $teamPlayers);
         $this->assertEquals($player->first_name, $teamPlayer->first_name);
     }
@@ -33,10 +33,10 @@ class ExampleTest extends TestCase
         foreach ($players as $player) {
             Contract::factory()->create(['team_id' => $team->id, 'player_id' => $player->id]);
         }
-        
+
         $teamPlayers = $team->players;
         $teamPlayer = $teamPlayers->first();
-        
+
         $this->assertCount(3, $teamPlayers);
         $this->assertEquals($players->first()->first_name, $teamPlayer->first_name);
     }
@@ -53,11 +53,11 @@ class ExampleTest extends TestCase
         $contract = $team->contracts()->first();
         $contract->end_date = now()->subDay();
         $contract->save();
-        
+
         $teamPlayers = $team->players;
         $teamPlayer = $teamPlayers->first();
-        
+
         $this->assertCount(2, $teamPlayers);
-        $this->assertFalse($contract->isActual());
+        $this->assertFalse($contract->isActual);
     }
 }

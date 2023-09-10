@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Game;
+use App\Models\Goal;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,9 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Player::factory(10)->create();
-        \App\Models\Team::factory(2)->create();
-        \App\Models\Contract::factory(3)->create();
+        $teamH = \App\Models\Team::factory(1)->create();
+        $teamA = \App\Models\Team::factory(1)->create();
+        \App\Models\Contract::factory(12)->create(['team_id' => $teamH[0]->id]);
+        \App\Models\Contract::factory(12)->create(['team_id' => $teamA[0]->id]);
+
+        $game = Game::factory()->create(['team_home' => $teamH[0]->id, 'team_away' => $teamA[0]->id]);
+        Goal::factory(2)->create(['game_id' => $game->id, 'player_id' => $teamH[0]->players()->first()->id ,'team_id' => $teamH[0]->id]);
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

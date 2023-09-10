@@ -11,14 +11,14 @@ class Game extends Model
 {
     use HasFactory;
 
-    public function teamA(): BelongsTo
+    public function teamHome(): BelongsTo
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Team::class, 'team_home');
     }
 
-    public function teamB(): BelongsTo
+    public function teamAway(): BelongsTo
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Team::class, 'team_away');
     }
 
     public function goals(): HasMany
