@@ -26,5 +26,10 @@ Artisan::command('mt', function () {
     $p = Game::find(1);
 
     dd($p->teamAway);
-    //TODO: can't use team_home, how to enable this?
+})->purpose('Display an inspiring quote');
+
+Artisan::command('my', function () {
+    $p = Player::find(1);
+
+    dd($p->team);
 })->purpose('Display an inspiring quote');

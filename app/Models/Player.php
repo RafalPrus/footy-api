@@ -23,7 +23,7 @@ class Player extends Model
         $team = $this->team;
 
         return Attribute::make(
-            get: fn($value, $attributes) => $team
+            get: fn($value, $attributes) => ! empty($team)
         );
     }
 
@@ -43,15 +43,16 @@ class Player extends Model
     public function previousTeams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class, (new Contract())->getTable())
-            ->where('contracts.end_date', '<', now()->toDateTimeString());
+            ->where('contracts.end_date', '<', now()->toDateTimeString())
+            ->whereHas();
     }
 
-    public function goalsPer90Minutes()
+    public function goalsPer90Minutes(): Attribute
     {
-        if (! $this->minutes || ! $this->goals) {
-            return 0;
-        }
-
-        return $this->goals / ($this->minutes / 90);
+        return Attribute::make(
+                get: fn($value, $attributes) => ($this->goals && $this->minutes)
+                                                    ? $this->goals / ($this->minutes / 90)
+                                                    : 0
+        );
     }
 }
