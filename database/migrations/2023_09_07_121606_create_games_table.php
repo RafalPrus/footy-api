@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('gameweek_id')->constrained('gameweeks');
             $table->date('kickoff_time')->nullable();
             $table->foreignId('team_home')->constrained('teams');
             $table->foreignId('team_away')->constrained('teams');
