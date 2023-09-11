@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Player;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\Team;
@@ -16,6 +17,8 @@ class GameTest extends TestCase
     private Team $homeTeam;
     private Team $awayTeam;
     private Game $game;
+    private Player $homeTeamPlayer;
+    private Player $awayTeamPlayer;
 
     protected function setUp(): void
     {
@@ -23,13 +26,31 @@ class GameTest extends TestCase
 
         $this->homeTeam = \App\Models\Team::factory(1)->create()[0];
         $this->awayTeam = \App\Models\Team::factory(1)->create()[0];
-        \App\Models\Contract::factory(1)->create(['team_id' => $this->homeTeam->id]);
-        \App\Models\Contract::factory(1)->create(['team_id' => $this->awayTeam->id]);
 
-        $this->game = Game::factory()->create(['team_home_id' => $this->homeTeam->id, 'team_away_id' => $this->awayTeam->id]);
+        $this->homeTeamPlayer = (\App\Models\Contract::factory(1)->create([
+            'team_id' => $this->homeTeam->id
+        ])[0])->player;
 
-        Goal::factory(2)->create(['game_id' => $this->game->id, 'player_id' => $this->homeTeam->players()->first()->id ,'team_id' => $this->homeTeam->id]);
-        Goal::factory(3)->create(['game_id' => $this->game->id, 'player_id' => $this->awayTeam->players()->first()->id ,'team_id' => $this->awayTeam->id]);
+        $this->awayTeamPlayer = (\App\Models\Contract::factory(1)->create([
+            'team_id' => $this->awayTeam->id
+        ])[0])->player;
+
+        $this->game = Game::factory()->create([
+            'team_home_id' => $this->homeTeam->id,
+            'team_away_id' => $this->awayTeam->id
+        ]);
+
+        Goal::factory(2)->create([
+            'game_id' => $this->game->id,
+            'player_id' => $this->homeTeam->players()->first()->id ,
+            'team_id' => $this->homeTeam->id
+        ]);
+
+        Goal::factory(3)->create([
+            'game_id' => $this->game->id,
+            'player_id' => $this->awayTeam->players()->first()->id ,
+            'team_id' => $this->awayTeam->id
+        ]);
 
         foreach($this->homeTeam->players as $player) {
             $this->game->players()->attach([$player->id => ['is_home' => true]]);
@@ -55,5 +76,12 @@ class GameTest extends TestCase
     {
         $scorersNumber = count($this->game->scorers);
         $this->assertEquals(5, $scorersNumber);
+    }
+
+    public function test_game_shows_correct_scorers(): void
+    {
+        $scorers = $this->game->scorers;
+        $this->assertTrue($scorers->contains($this->homeTeamPlayer));
+        $this->assertTrue($scorers->contains($this->awayTeamPlayer));
     }
 }
