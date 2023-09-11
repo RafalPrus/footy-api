@@ -30,4 +30,9 @@ class Team extends Model
             ->sum();
     }
 
+    public function homeGames(): HasMany
+    {
+        return $this->hasMany(Game::class, 'team_home');
+    }
+
 }

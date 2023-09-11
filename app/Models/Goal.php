@@ -19,5 +19,6 @@ class Goal extends Model
     public function goalkeeper(): HasOneThrough
     {
         //TODO: Make relation after creating methods for match squad
+        
     }
 }

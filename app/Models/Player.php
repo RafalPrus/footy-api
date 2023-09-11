@@ -27,7 +27,7 @@ class Player extends Model
         );
     }
 
-    private function teams(): BelongsToMany
+    public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class, (new Contract())->getTable())
             ->wherePivot('end_date', '>=', now()->toDateTimeString());
@@ -36,15 +36,14 @@ class Player extends Model
     public function team(): Attribute
     {
         return Attribute::make(
-            get: fn($value, $attributes) => $this->teams()->first()
+            get: fn($value, $attributes) => $this->teams()->first() ?? 'Free agent'
         );
     }
 
     public function previousTeams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class, (new Contract())->getTable())
-            ->where('contracts.end_date', '<', now()->toDateTimeString())
-            ->whereHas();
+            ->where('contracts.end_date', '<', now()->toDateTimeString());
     }
 
     public function goalsPer90Minutes(): Attribute
@@ -54,5 +53,10 @@ class Player extends Model
                                                     ? $this->goals / ($this->minutes / 90)
                                                     : 0
         );
+    }
+
+    public function games(): BelongsToMany
+    {
+        return $this->belongsToMany(Game::class);
     }
 }
