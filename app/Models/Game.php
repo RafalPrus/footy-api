@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Game extends Model
 {
@@ -60,10 +61,16 @@ class Game extends Model
         );
     }
 
-    public function awayPlayers()
+    public function awayPlayers(): Attribute
     {
-        return $this->players()->where('is_home', false)->get();
+        return Attribute::make(
+            get: fn($value, $attributes) => $this->players()->where('is_home', false)->get()
+        );
     }
 
+    public function scorers(): BelongsToMany
+    {
+        return $this->belongsToMany(Player::class, Goal::class);
+    }
 
 }

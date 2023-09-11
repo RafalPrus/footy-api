@@ -37,7 +37,7 @@ Artisan::command('my', function () {
 Artisan::command('game', function () {
     $game = Game::find(1);
 
-    dd($game->homeTeamGoals);
+    dd(count($game->scorers));
 })->purpose('Display an inspiring quote');
 
 Artisan::command('team', function () {

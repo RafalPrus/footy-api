@@ -13,6 +13,8 @@ class Player extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function contracts(): HasMany
     {
         return $this->hasMany(Contract::class);
