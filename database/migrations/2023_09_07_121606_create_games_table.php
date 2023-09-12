@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('gameweek_id')->constrained('gameweeks');
             $table->date('kickoff_time')->nullable();
+            $table->boolean('finished')->default(false);
             $table->foreignId('team_home_id')->constrained('teams');
             $table->foreignId('team_away_id')->constrained('teams');
             $table->timestamps();

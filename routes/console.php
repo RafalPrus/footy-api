@@ -41,7 +41,9 @@ Artisan::command('game', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('team', function () {
-    $game = Team::find(1);
+    $game = Game::find(1);
 
-    dd($game->homeGames());
+    $game->update([
+        'finished' => true
+    ]);
 })->purpose('Display an inspiring quote');

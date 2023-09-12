@@ -11,6 +11,8 @@ class Team extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function players(): BelongsToMany
     {
         return $this->belongsToMany(Player::class, (new Contract())->getTable())

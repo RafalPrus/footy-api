@@ -15,14 +15,16 @@ class Game extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function teamHome(): BelongsTo
     {
-        return $this->belongsTo(Team::class, 'team_home');
+        return $this->belongsTo(Team::class, 'team_home_id');
     }
 
     public function teamAway(): BelongsTo
     {
-        return $this->belongsTo(Team::class, 'team_away');
+        return $this->belongsTo(Team::class, 'team_away_id');
     }
 
     public function goals(): HasMany
