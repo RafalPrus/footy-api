@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Team;
+use App\Models\Gameweek;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Game>
@@ -19,22 +20,10 @@ class GameFactory extends Factory
     {
         return [
             'kickoff_time' => fake()->dateTimeBetween('-16 weeks', '-1 week'),
-            'team_home' => Team::factory(),
-            'team_away' => Team::factory(),
+            'gameweek_id' => Gameweek::factory(),
+            'team_home_id' => Team::factory(),
+            'team_away_id' => Team::factory(),
 
         ];
-
-        // return [
-        //     'player_id' => fake()->randomElement($players),
-        //     'team_id' => fake()->randomElement($teams),
-        //     'start_date' => fake()->dateTimeBetween('-5 years', '-1 year'),
-        //     'end_date' => fake()->dateTimeBetween('1 year', '5 years'),
-        // ];
-        // $table->id();
-        // $table->date('kickoff_time')->nullable();
-        // $table->foreignId('team_a')->constrained('teams');
-        // $table->foreignId('team_b')->constrained('teams');
-        // $table->timestamps();
-
     }
 }

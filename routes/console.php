@@ -29,7 +29,19 @@ Artisan::command('mt', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('my', function () {
-    $p = Player::find(1);
+    $p = Player::find(25);
 
     dd($p->team);
+})->purpose('Display an inspiring quote');
+
+Artisan::command('game', function () {
+    $game = Game::find(1);
+
+    dd(count($game->scorers));
+})->purpose('Display an inspiring quote');
+
+Artisan::command('team', function () {
+    $g= Team::find(2);
+
+    dd($g->avgGoalsPerGame);
 })->purpose('Display an inspiring quote');
