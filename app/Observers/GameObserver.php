@@ -34,17 +34,19 @@ class GameObserver
                                                                         );
             
             DB::transaction(function () use ($homeTeam, $awayTeam, $homeTeamPoints, $awayTeamPoints, $game) {
-                if ($homeTeamPoints) {
-                    $homeTeam->update([
-                        'points' => $homeTeam->points + $homeTeamPoints
-                    ]);
-                }
+
+                $homeTeam->update([
+                    'points' => $homeTeam->points + $homeTeamPoints,
+                    'goals' => $homeTeam->goals + $game->homeTeamGoals,
+                    'goals_conceded' => $homeTeam->goals_conceded + $game->awayTeamGoals,
+                ]);
+
+                $awayTeam->update([
+                    'points' => $awayTeam->points + $awayTeamPoints,
+                    'goals' => $awayTeam->goals + $game->awayTeamGoals,
+                    'goals_conceded' => $awayTeam->goals_conceded + $game->homeTeamGoals,
+                ]);
                 
-                if ($awayTeamPoints) {
-                    $awayTeam->update([
-                        'points' => $awayTeam->points + $awayTeamPoints
-                    ]);
-                }
 
                 $game->update([
                     'points_counted' => true

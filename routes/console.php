@@ -41,9 +41,7 @@ Artisan::command('game', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('team', function () {
-    $game = Game::find(1);
+    $g= Team::find(2);
 
-    $game->update([
-        'finished' => true
-    ]);
+    dd($g->avgGoalsPerGame);
 })->purpose('Display an inspiring quote');
