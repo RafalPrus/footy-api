@@ -24,8 +24,8 @@ class GameTest extends TestCase
     {
         parent::setUp();
 
-        $this->homeTeam = \App\Models\Team::factory(1)->create()[0];
-        $this->awayTeam = \App\Models\Team::factory(1)->create()[0];
+        $this->homeTeam = \App\Models\Team::factory(1)->create(['points' => 0])[0];
+        $this->awayTeam = \App\Models\Team::factory(1)->create(['points' => 0])[0];
 
         $this->homeTeamPlayer = (\App\Models\Contract::factory(1)->create([
             'team_id' => $this->homeTeam->id
@@ -83,5 +83,48 @@ class GameTest extends TestCase
         $scorers = $this->game->scorers;
         $this->assertTrue($scorers->contains($this->homeTeamPlayer));
         $this->assertTrue($scorers->contains($this->awayTeamPlayer));
+    }
+
+    public function test_observer_adds_points_correctly(): void
+    {
+        $this->game->update([
+            'finished' => true
+        ]);
+
+        $this->awayTeam->refresh();
+        $this->homeTeam->refresh();
+        $this->assertTrue($this->awayTeam->points == 3);
+        $this->assertTrue($this->homeTeam->points == 0);
+    }
+
+    public function test_observer_not_adds_points_when_game_not_finished(): void
+    {
+        $this->game->update([
+            'kickoff_time' => now()
+        ]);
+        
+        $this->awayTeam->refresh();
+        $this->homeTeam->refresh();
+        $this->assertTrue($this->awayTeam->points == 0);
+        $this->assertTrue($this->homeTeam->points == 0);
+    }
+
+    public function test_observer_not_adds_points_when_points_already_counted(): void
+    {
+        $this->game->update([
+            'finished' => true
+        ]);
+        
+        $this->awayTeam->refresh();
+        $this->game->refresh();
+
+        $this->assertTrue($this->game->points_counted == true);
+
+        $this->game->update([
+            'kickoff_time' => now()
+        ]);
+
+        $this->assertTrue($this->awayTeam->points == 3);
+        $this->assertTrue($this->homeTeam->points == 0);
     }
 }

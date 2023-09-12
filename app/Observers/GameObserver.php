@@ -22,18 +22,18 @@ class GameObserver
     public function updated(Game $game): void
     {
         $homeTeam = $game->teamHome;
-        $awayTeam = $game->awayHome;
+        $awayTeam = $game->teamAway;
         $homeTeamPoints = 0;
         $awayTeamPoints = 0;
-        if($game->finished) {
+        if($game->finished && !$game->points_counted) {
             ($game->homeTeamGoals > $game->awayTeamGoals)
                             ? $homeTeamPoints = 3
                             : (($game->homeTeamGoals < $game->awayTeamGoals)
                                                                             ? $awayTeamPoints = 3
                                                                             : $awayTeamPoints = 1 && $homeTeamPoints = 1
                                                                         );
-                                                                        
-            DB::transaction(function () use ($homeTeam, $awayTeam, $homeTeamPoints, $awayTeamPoints) {
+            
+            DB::transaction(function () use ($homeTeam, $awayTeam, $homeTeamPoints, $awayTeamPoints, $game) {
                 if ($homeTeamPoints) {
                     $homeTeam->update([
                         'points' => $homeTeam->points + $homeTeamPoints
@@ -45,6 +45,10 @@ class GameObserver
                         'points' => $awayTeam->points + $awayTeamPoints
                     ]);
                 }
+
+                $game->update([
+                    'points_counted' => true
+                ]);
             });
         }
     }

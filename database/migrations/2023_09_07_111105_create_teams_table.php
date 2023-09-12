@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('street');
             $table->unsignedMediumInteger('stadium_capacity');
             $table->unsignedSmallInteger('strength');
+            $table->text('test')->default('some text');
             $table->tinyInteger('points')->default(0);
             $table->timestamps();
         });
